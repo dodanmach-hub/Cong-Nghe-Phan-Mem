@@ -1,0 +1,1 @@
+//màn hình xem danh sách từ khóa toàn bộ hệ thống
