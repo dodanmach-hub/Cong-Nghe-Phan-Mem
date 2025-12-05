@@ -104,8 +104,39 @@ const handleDateSelect = (day: number) => {
     } else {
       setDateRange({ ...dateRange, end: selectedDate });
     }
+};
+const formatDate = (date: Date | null) => {
+    if (!date) return '';
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   };
-    
-    
 
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-4 md:p-6 font-sans">
+      {/* Header */}
+      <header className="mb-6 md:mb-8">
+        <div className="flex flex-col md:flex-row md:items-center justify-between">
+          <div>
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Admin Reports Dashboard</h1>
+            <div className="flex items-center gap-2 mt-2">
+              <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-semibold">
+                A
+              </div>
+              <span className="text-gray-600">admin@business.com</span>
+              <span className="text-gray-400">•</span>
+              <span className="text-sm text-gray-500">Last updated: Today 10:30 AM</span>
+            </div>
+          </div>
+          
+          <div className="mt-4 md:mt-0 flex gap-3">
+            <button className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg text-gray-700 font-medium">
+              Save Template
+            </button>
+            <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium">
+              Schedule Report
+            </button>
+          </div>
+        </div>
+      </header>
+
+  
   
