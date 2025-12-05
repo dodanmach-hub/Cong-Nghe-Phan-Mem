@@ -138,5 +138,58 @@ const formatDate = (date: Date | null) => {
         </div>
       </header>
 
+      <main className="max-w-7xl mx-auto">
+        {/* Quick Stats */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+          {quickStats.map((stat, index) => (
+            <div key={index} className="bg-white rounded-xl p-4 shadow-sm">
+              <div className="flex justify-between items-start">
+                <div>
+                  <p className="text-sm text-gray-500">{stat.label}</p>
+                  <p className="text-2xl font-bold text-gray-800 mt-1">{stat.value}</p>
+                </div>
+                <span className={`text-sm font-medium ${stat.change.startsWith('+') ? 'text-green-600' : 'text-red-600'}`}>
+                  {stat.change}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="flex flex-col lg:flex-row gap-6">
+          {/* Left Column - Report Configuration */}
+          <div className="lg:w-2/3">
+            <section className="bg-white rounded-2xl shadow-lg p-6 mb-6">
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-800">Reports & Data Export</h2>
+                  <p className="text-gray-600 mt-1">Generate and export various statistical reports.</p>
+                </div>
+                <div className="flex gap-3 mt-4 md:mt-0">
+                  <button
+                    onClick={() => handleExport('pdf')}
+                    className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg font-semibold transition-colors"
+                  >
+                    <Download size={20} />
+                    Export PDF
+                  </button>
+                  <div className="relative group">
+                    <button className="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2.5 rounded-lg font-semibold">
+                      More
+                    </button>
+                    <div className="absolute right-0 mt-2 w-40 bg-white shadow-lg rounded-lg py-2 hidden group-hover:block z-10">
+                      <button onClick={() => handleExport('csv')} className="w-full text-left px-4 py-2 hover:bg-gray-100">
+                        Export CSV
+                      </button>
+                      <button onClick={() => handleExport('excel')} className="w-full text-left px-4 py-2 hover:bg-gray-100">
+                        Export Excel
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              
+
   
   
