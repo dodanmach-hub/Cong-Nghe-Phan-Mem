@@ -189,6 +189,294 @@ const formatDate = (date: Date | null) => {
                 </div>
               </div>
 
+              {/* Quick Report Templates */}
+              <div className="mb-8">
+                <h3 className="text-lg font-semibold text-gray-700 mb-4">Quick Report Templates</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {reportTemplates.map((template) => (
+                    <button
+                      key={template.id}
+                      onClick={() => handleQuickReport(template.name)}
+                      className="flex items-start gap-4 p-4 border border-gray-200 rounded-xl hover:border-blue-300 hover:bg-blue-50 transition-colors text-left"
+                    >
+                      <div className={`${template.color} p-3 rounded-lg text-white`}>
+                        {template.icon}
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-gray-800">{template.name}</h4>
+                        <p className="text-sm text-gray-600 mt-1">{template.description}</p>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Customize Report Section */}
+              <div className="mb-8">
+                <h3 className="text-xl font-semibold text-gray-800 mb-4">Customize Your Report</h3>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {/* Report Type */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Report Type</label>
+                    <select
+                      value={reportType}
+                      onChange={(e) => setReportType(e.target.value as ReportType)}
+                      className="w-full p-3 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    >
+                      {reportTypes.map((type) => (
+                        <option key={type} value={type}>{type}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Filter by Department */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Filter by Department</label>
+                    <select
+                      value={department}
+                      onChange={(e) => setDepartment(e.target.value as Department)}
+                      className="w-full p-3 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    >
+                      {departments.map((dept) => (
+                        <option key={dept} value={dept}>{dept}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Filter by Channel */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Filter by Channel</label>
+                    <select
+                      value={channel}
+                      onChange={(e) => setChannel(e.target.value as Channel)}
+                      className="w-full p-3 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    >
+                      {channels.map((ch) => (
+                        <option key={ch} value={ch}>{ch}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                {/* Selected Date Range Display */}
+                {dateRange.start && (
+                  <div className="mt-6 p-4 bg-blue-50 rounded-lg">
+                    <p className="text-sm font-medium text-blue-800">
+                      Selected Date Range: {formatDate(dateRange.start)} 
+                      {dateRange.end ? ` - ${formatDate(dateRange.end)}` : ' (Select end date)'}
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              <hr className="my-6 border-gray-200" />
+
+              {/* Date Range Selector */}
+              <div>
+                <h3 className="text-xl font-semibold text-gray-800 mb-6">Select Date Range</h3>
+                
+                {/* Month Navigation */}
+                <div className="flex items-center justify-between mb-6">
+                  <button className="p-2 hover:bg-gray-100 rounded-lg">
+                    <ChevronLeft className="text-gray-600" />
+                  </button>
+                  
+                  <div className="flex flex-wrap gap-2">
+                    {['October 2023', 'November 2023', 'December 2023'].map((month) => (
+                      <button
+                        key={month}
+                        onClick={() => setCurrentMonth(month as any)}
+                        className={`px-4 py-2 rounded-lg font-medium ${currentMonth === month ? 'bg-blue-100 text-blue-700' : 'text-gray-600 hover:bg-gray-100'}`}
+                      >
+                        {month}
+                      </button>
+                    ))}
+                  </div>
+                  
+                  <button className="p-2 hover:bg-gray-100 rounded-lg">
+                    <ChevronRight className="text-gray-600" />
+                  </button>
+                </div>
+
+                {/* Calendar Grid */}
+                <div className="bg-gray-50 rounded-xl p-6">
+                  <div className="grid grid-cols-7 gap-2 mb-4">
+                    {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((day) => (
+                      <div key={day} className="text-center font-semibold text-gray-500 py-2">
+                        {day}
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="grid grid-cols-7 gap-2">
+                    {currentMonth === 'October 2023' && octoberDays.map((day) => (
+                      <button
+                        key={day}
+                        onClick={() => handleDateSelect(day)}
+                        className={`text-center p-3 rounded-lg transition-colors ${
+                          dateRange.start?.getDate() === day || dateRange.end?.getDate() === day
+                            ? 'bg-blue-600 text-white'
+                            : day <= 10 
+                            ? 'bg-blue-100 text-blue-700 hover:bg-blue-200'
+                            : 'text-gray-700 hover:bg-gray-200'
+                        }`}
+                      >
+                        {day}
+                      </button>
+                    ))}
+                    
+                    {currentMonth === 'November 2023' && novemberDays.map((day) => (
+                      <button
+                        key={day}
+                        onClick={() => handleDateSelect(day)}
+                        className={`text-center p-3 rounded-lg transition-colors ${
+                          dateRange.start?.getDate() === day || dateRange.end?.getDate() === day
+                            ? 'bg-blue-600 text-white'
+                            : day <= 8 
+                            ? 'bg-blue-100 text-blue-700 hover:bg-blue-200'
+                            : 'text-gray-700 hover:bg-gray-200'
+                        }`}
+                      >
+                        {day}
+                      </button>
+                    ))}
+                    
+                    {currentMonth === 'December 2023' && decemberDays.map((day) => (
+                      <button
+                        key={day}
+                        onClick={() => handleDateSelect(day)}
+                        className={`text-center p-3 rounded-lg transition-colors ${
+                          dateRange.start?.getDate() === day || dateRange.end?.getDate() === day
+                            ? 'bg-blue-600 text-white'
+                            : 'text-gray-700 hover:bg-gray-200'
+                        }`}
+                      >
+                        {day}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          {/* Right Column - Sidebar */}
+          <div className="lg:w-1/3">
+            {/* Recent Reports */}
+            <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
+              <h3 className="text-xl font-semibold text-gray-800 mb-4">Recent Reports</h3>
+              <div className="space-y-4">
+                {[
+                  { name: 'Weekly Performance', date: 'Nov 15, 2023', type: 'PDF' },
+                  { name: 'Customer Feedback', date: 'Nov 12, 2023', type: 'CSV' },
+                  { name: 'Sales Analysis', date: 'Nov 8, 2023', type: 'Excel' },
+                  { name: 'Support Metrics', date: 'Nov 5, 2023', type: 'PDF' }
+                ].map((report, index) => (
+                  <div key={index} className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg">
+                    <div>
+                      <h4 className="font-medium text-gray-800">{report.name}</h4>
+                      <p className="text-sm text-gray-500">{report.date}</p>
+                    </div>
+                    <span className="text-xs font-medium bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                      {report.type}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Export Settings */}
+            <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
+              <h3 className="text-xl font-semibold text-gray-800 mb-4">Export Settings</h3>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Format</label>
+                  <select className="w-full p-3 border border-gray-300 rounded-lg">
+                    <option>PDF (Recommended)</option>
+                    <option>CSV</option>
+                    <option>Excel</option>
+                    <option>JSON</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Include Charts</label>
+                  <div className="flex items-center gap-3">
+                    <label className="inline-flex items-center">
+                      <input type="radio" name="charts" className="text-blue-600" defaultChecked />
+                      <span className="ml-2">Yes</span>
+                    </label>
+                    <label className="inline-flex items-center">
+                      <input type="radio" name="charts" className="text-blue-600" />
+                      <span className="ml-2">No</span>
+                    </label>
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Data Granularity</label>
+                  <select className="w-full p-3 border border-gray-300 rounded-lg">
+                    <option>Detailed (All data)</option>
+                    <option>Summary Only</option>
+                    <option>Aggregated</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            {/* Quick Actions */}
+            <div className="bg-white rounded-2xl shadow-lg p-6">
+              <h3 className="text-xl font-semibold text-gray-800 mb-4">Quick Actions</h3>
+              <div className="space-y-3">
+                <button
+                  onClick={handleQuickReport}
+                  className="w-full flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50"
+                >
+                  <span className="font-medium text-gray-700">Generate Monthly Report</span>
+                  <Calendar size={18} className="text-gray-500" />
+                </button>
+                <button className="w-full flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50">
+                  <span className="font-medium text-gray-700">Email Report to Team</span>
+                  <Mail size={18} className="text-gray-500" />
+                </button>
+                <button className="w-full flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50">
+                  <span className="font-medium text-gray-700">Download All Data</span>
+                  <Download size={18} className="text-gray-500" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Navigation */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-between mt-8">
+          <button
+            className="flex items-center justify-center gap-2 bg-white hover:bg-gray-50 text-gray-800 border border-gray-300 px-6 py-3 rounded-lg font-semibold transition-colors"
+          >
+            <Calendar size={20} />
+            Schedule Report
+          </button>
+          
+          <div className="flex gap-4">
+            <button
+              className="flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-3 rounded-lg font-semibold transition-colors"
+            >
+              Reset Filters
+            </button>
+            <button
+              className="flex items-center justify-center gap-2 bg-gray-800 hover:bg-gray-900 text-white px-6 py-3 rounded-lg font-semibold transition-colors"
+            >
+              <HelpCircle size={20} />
+              Help Center
+            </button>
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+};
+
+export default AdminReport;
+
               
 
   
